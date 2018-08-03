@@ -44,27 +44,11 @@
                             </div>
                         </div>
                     @endif
-                    @if(isset($dht['current_page']))
-                    <nav aria-label="Page navigation" style="text-align: center">
-                        <ul class="pagination pagination-lg">
-                            <li>
-                                <a href="/search?keyword={{ $dht['keyword'] }}@if($dht['current_page'] != 1)&page={{ $dht['current_page'] - 1 }}@endif"
-                                   aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            @for($i = 1; $i <= $dht['last_page'];$i++ )
-                            <li class="@if($i == $dht['current_page']) active @endif"><a href="/search?keyword={{ $dht['keyword'] }}&page={{ $i }}">{{ $i }}</a></li>
-                            @endfor
-                            <li>
-                                <a href="/search?keyword={{ $dht['keyword'] }}@if($dht['current_page'] < $dht['last_page'])&page={{ $dht['current_page'] + 1 }}@endif"
-                                   aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    @endif
+                            <nav aria-label="Page navigation" style="text-align: center">
+                                <ul class="pagination pagination-lg pagejs">
+
+                                </ul>
+                            </nav>
                 </div>
 
                 <div class="col-md-3">
@@ -74,4 +58,86 @@
         </div>
         @include('layouts.footer')
     </div>
+@endsection
+@section('script')
+<script>
+    var total = parseInt( "@if(isset($dht['last_page'])){{ $dht['last_page'] }}@else 0 @endif" );
+    var keyword = "@if(isset($dht['keyword'])){{ $dht['keyword'] }} @else '' @endif";
+    var newPage = parseInt( "@if(isset($dht['current_page'])){{ $dht['current_page'] }} @else '' @endif" );
+
+
+    $(function () {
+
+        if(total > 1){
+            bodys = '';
+
+            if(total < 10){
+                bodys = page(1,total,newPage,total);
+            }else{
+                initpage = (parseInt( newPage / 10) * 10);
+
+               bodys = page( (initpage == 0 ? 1 : initpage),numstopPage(initpage));
+
+                if(isInteger(newPage)){
+                    bodys = page(newPage,numstopPage(initpage));
+                }
+            }
+            $(".pagejs").html(bodys);
+        }
+
+        function numstopPage(initpage)
+        {
+            num = initpage + 10;
+
+            if(num > total){
+                num = total;
+            }
+            return num;
+        }
+
+
+        function page(star,limit)
+        {
+
+            bodyhtml = upHtml( newPage == 1 ? 1 : (newPage - 1) );
+
+             for (i=star; i<=limit; i++ ) {
+
+                 bodyhtml += commonHtml(i, (i==newPage) ? 'active' : '' );
+             }
+
+            bodyhtml += nextHtml( (newPage < total) ? (newPage + 1) : 0 );
+            return bodyhtml;
+        }
+
+        function isInteger(obj){
+            return obj%10 === 0;
+        }
+
+        function commonHtml(key,type)
+        {
+            return '<li class="'+ type +'"><a href="/search?keyword='+ keyword +'&page='+ key +'">'+ key +'</a></li>';
+        }
+
+        /**
+         * 上一页
+         * @param $key
+         * @returns {string}
+         */
+        function upHtml(key)
+        {
+            return '<li><a href="/search?keyword='+ keyword +'&page='+ key +'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+        }
+
+        /**
+         * 下一页
+         * @param int $key
+         * @returns {string}
+         */
+        function nextHtml(key) {
+            return '<li><a href="/search?keyword='+ keyword +'&page='+ key +'" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+        }
+
+    });
+</script>
 @endsection
