@@ -15,7 +15,7 @@ use App\Tools\TokenManage;
 
 class DhtController extends Controller
 {
-    public function search($keyword,$page = 0 )
+    public function search($keyword,$page = 0,$orderBy )
     {
         $token = $this->token();
         if (isset($token['status'])) {
@@ -27,7 +27,7 @@ class DhtController extends Controller
             return false;
         }
 
-        $url = env('DHT_API_URL') . '/api/get';
+        $url = env('DHT_API_URL') . '/api/search';
 
         $client = new ClientTool();
         $data = [
@@ -35,6 +35,7 @@ class DhtController extends Controller
             'keyword' => $keyword,
             'page' => 20,
             'limit' => $page,
+            'orderby' => $orderBy
         ];
 
         try{
@@ -65,7 +66,7 @@ class DhtController extends Controller
 
         $client = new ClientTool();
 
-        $url = env('DHT_API_URL') . '/api/get/' . $hash . '?token=' . $token['token'];
+        $url = env('DHT_API_URL') . '/api/find/' . $hash . '?token=' . $token['token'];
 
 
         try{
@@ -76,6 +77,7 @@ class DhtController extends Controller
                 'controller' => 'DhtController->getOne',
                 'value' => $e->getMessage()
             ]);
+
             return false;
         }
 

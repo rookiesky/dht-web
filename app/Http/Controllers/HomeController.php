@@ -28,13 +28,15 @@ class HomeController extends Controller
     {
         $keyword = $request->get('keyword');
         $page = $request->get('page') ?? 1;
+        $orderBy = $request->get('type') ?? 'id';
 
         $banner = $this->Banner('list');
+
 
         $dht = [];
 
         if($keyword){
-            $result = (new DhtController())->search($keyword,$page);
+            $result = (new DhtController())->search($keyword,$page,$orderBy);
             $data = json_decode($result,true);
 
             if(isset($data['current_page'])){
@@ -45,7 +47,8 @@ class HomeController extends Controller
                     'data' => $listData,
                     'last_page' => $data['last_page'],
                     'current_page' => $data['current_page'],
-                    'keyword' => $keyword
+                    'keyword' => $keyword,
+                    'type' => $orderBy
                 ];
             }
         }
@@ -58,6 +61,7 @@ class HomeController extends Controller
     {
         if($hash){
             $result = (new DhtController())->getOne($hash);
+
             $dht = json_decode($result,true);
 
             if(isset($dht['status'])){

@@ -1,5 +1,13 @@
 @extends('layouts.master')
 @section('content')
+    <style>
+        .sizeclass{
+            border-radius: 5px;
+            background-color: #FFA500 !important;
+            color: #fff !important;
+            padding: 0px 4px;
+        }
+        </style>
     <div class="container-fluid">
         @include('layouts.header')
 
@@ -8,9 +16,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav nav-pills" role="tablist">
-                            {{--<li role="presentation" class="active"><a href="#">创建日期</a></li>--}}
-                            {{--<li role="presentation"><a href="#">文件大小</a></li>--}}
-                            {{--<li role="presentation"><a href="#">下载热度</a></li>--}}
+                            <li role="presentation" class="active" data-order="id"><a href="/search?keyword={{$dht['keyword']}}&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=id">创建日期</a></li>
+                            <li role="presentation" data-order="length"><a href="/search?keyword={{$dht['keyword']}}&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=length">文件大小</a></li>
+                            <li role="presentation" data-order="requests"><a href="/search?keyword={{$dht['keyword']}}&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=requests">下载热度</a></li>
                         </ul>
                     </div>
                 </div>
@@ -30,7 +38,7 @@
                             {{ $val['name'] }}
                             <div class="panel-body-footer">
                                 <div class="info">收录时间：<span>{{ $val['create_time'] }}</span></div>
-                                <div class="info">文件大小：<span>{{ $val['length'] }}</span></div>
+                                <div class="info">文件大小：<span class="sizeclass">{{ $val['length'] }}</span></div>
                                 <div class="info">下载热度：<span>{{ $val['requests'] }}</span></div>
                                 <div class="info">文件类型：<span>{{ $val['category'] }}</span></div>
                             </div>
@@ -64,6 +72,7 @@
     var total = parseInt( "@if(isset($dht['last_page'])){{ $dht['last_page'] }}@else 0 @endif" );
     var keyword = "@if(isset($dht['keyword'])){{ $dht['keyword'] }} @else '' @endif";
     var newPage = parseInt( "@if(isset($dht['current_page'])){{ $dht['current_page'] }} @else '' @endif" );
+    var bytype = "{{ $dht['type'] }}";
 
 
     $(function () {
@@ -85,6 +94,17 @@
             $(".pagejs").html(bodys);
         }
 
+        navli = $('.nav-pills li');
+
+        $.each(navli,function (key,item) {
+            if(navli.eq(key).data('order') == bytype){
+                navli.eq(key).addClass('active');
+            }else{
+                navli.eq(key).removeClass('active');
+            }
+        })
+
+
         function numstopPage(initpage)
         {
             num = initpage + 10;
@@ -94,7 +114,6 @@
             }
             return num;
         }
-
 
         function page(star,limit)
         {
@@ -116,7 +135,7 @@
 
         function commonHtml(key,type)
         {
-            return '<li class="'+ type +'"><a href="/search?keyword='+ keyword +'&page='+ key +'">'+ key +'</a></li>';
+            return '<li class="'+ type +'"><a href="/search?keyword='+ keyword +'&page='+ key +'&type='+ bytype +'">'+ key +'</a></li>';
         }
 
         /**
@@ -126,7 +145,7 @@
          */
         function upHtml(key)
         {
-            return '<li><a href="/search?keyword='+ keyword +'&page='+ key +'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+            return '<li><a href="/search?keyword='+ keyword +'&page='+ key +'&type='+ bytype +'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
         }
 
         /**
@@ -135,7 +154,7 @@
          * @returns {string}
          */
         function nextHtml(key) {
-            return '<li><a href="/search?keyword='+ keyword +'&page='+ key +'" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+            return '<li><a href="/search?keyword='+ keyword +'&page='+ key +'&type='+ bytype +'" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
         }
 
     });

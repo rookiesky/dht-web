@@ -22,7 +22,7 @@ Route::group(['prefix'=>'webAdmin','namespace'=>'Admin'],function(){
     //退出登录
     Route::get('logout','LoginController@logout');
     //创建账号
-   // Route::get('reg','UserController@createUser');
+//    Route::get('reg','LoginController@createUser');
 
     Route::group(['middleware' => 'auth'],function (){
         //后台首页视图

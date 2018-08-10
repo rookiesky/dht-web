@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Cache;
 class TokenManage
 {
     const TOKEN_API = '/api/user/login';
-    const TOKEN_TIME = 120; //分钟
     const TOKEN_CACHE_KEY = 'apitoken';
 
     public function get()
@@ -64,7 +63,7 @@ class TokenManage
      */
     private function setFile($data)
     {
-        Cache::put(self::TOKEN_CACHE_KEY,$data,self::TOKEN_TIME);
+        Cache::put(self::TOKEN_CACHE_KEY,$data,$data['minute']);
     }
 
 }

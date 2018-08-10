@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -50,6 +51,15 @@ class LoginController extends Controller
     {
         \Auth::logout();
         return redirect('/webAdmin/login');
+    }
+
+    public function createUser()
+    {
+        User::create([
+            'name' => 'rookie',
+            'password' => bcrypt('654321'),
+            'email' => 'aiqbc@126.com'
+        ]);
     }
 
 }

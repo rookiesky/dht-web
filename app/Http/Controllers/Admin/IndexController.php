@@ -49,7 +49,7 @@ class IndexController extends Controller
             return 0;
         }
 
-        $url = env('DHT_API_URL') . '/api/get/getTotal?token=' . $result['token'];
+        $url = env('DHT_API_URL') . '/api/getTotal?token=' . $result['token'];
         $client = new ClientTool();
         $result = $client->get($url);
         if (is_numeric($result)) {
