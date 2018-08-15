@@ -16,9 +16,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav nav-pills" role="tablist">
-                            <li role="presentation" class="active" data-order="id"><a href="/search?keyword={{$dht['keyword']}}&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=id">创建日期</a></li>
-                            <li role="presentation" data-order="length"><a href="/search?keyword={{$dht['keyword']}}&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=length">文件大小</a></li>
-                            <li role="presentation" data-order="requests"><a href="/search?keyword={{$dht['keyword']}}&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=requests">下载热度</a></li>
+                            <li role="presentation" class="active" data-order="id"><a href="/search?keyword=@if(isset($dht['keyword'])){{$dht['keyword']}}@endif&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=id">创建日期</a></li>
+                            <li role="presentation" data-order="length"><a href="/search?keyword=@if(isset($dht['keyword'])){{$dht['keyword']}}@endif&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=length">文件大小</a></li>
+                            <li role="presentation" data-order="requests"><a href="/search?keyword=@if(isset($dht['keyword'])){{$dht['keyword']}}@endif&page=@if(isset($dht['current_page'])){{ $dht['current_page'] }}@endif&type=requests">下载热度</a></li>
                         </ul>
                     </div>
                 </div>
