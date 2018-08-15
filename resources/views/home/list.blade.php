@@ -72,7 +72,7 @@
     var total = parseInt( "@if(isset($dht['last_page'])){{ $dht['last_page'] }}@else 0 @endif" );
     var keyword = "@if(isset($dht['keyword'])){{ $dht['keyword'] }} @else '' @endif";
     var newPage = parseInt( "@if(isset($dht['current_page'])){{ $dht['current_page'] }} @else '' @endif" );
-    var bytype = "{{ $dht['type'] }}";
+    var bytype = "@if(isset($dht['type'])){{ $dht['type'] }}@else '' @endif";
 
 
     $(function () {
