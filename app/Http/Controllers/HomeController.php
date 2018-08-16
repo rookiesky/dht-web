@@ -37,7 +37,7 @@ class HomeController extends Controller
 
         if($keyword){
             $result = (new DhtController())->search($keyword,$page,$orderBy);
-            $data = json_decode($result,true);
+            $data = $result->toArray();
 
             if(isset($data['current_page'])){
 
@@ -62,7 +62,7 @@ class HomeController extends Controller
         if($hash){
             $result = (new DhtController())->getOne($hash);
 
-            $dht = json_decode($result,true);
+            $dht = $result->toArray();
 
             if(isset($dht['status'])){
                 return redirect('/');
@@ -70,8 +70,9 @@ class HomeController extends Controller
             $dht['file_num'] = 1;
 
             if(isset($dht['file_list'])){
-                $dht['file_list']['file_list'] = $this->lengthFrom($dht['file_list']['file_list']);
-                $dht['file_num'] = count($dht['file_list']['file_list']);
+                $fileList = json_decode($dht['file_list']['file_list'],true);
+                $dht['file_list']['file_list'] = $this->lengthFrom($fileList);
+                $dht['file_num'] = count($fileList);
             }
 
             $dht['length'] = $this->lengthSize($dht['length']);

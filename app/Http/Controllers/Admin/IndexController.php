@@ -10,10 +10,9 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Hash;
 use App\Http\Controllers\Controller;
-use App\Log;
-use App\Tools\ClientTool;
-use App\Tools\TokenManage;
+
 
 class IndexController extends Controller
 {
@@ -38,29 +37,7 @@ class IndexController extends Controller
      */
     private function getTotal()
     {
-        $tokenClient = new TokenManage();
-        $result = $tokenClient->get();
-        if (isset($result['status'])) {
-            Log::create([
-                'name' => 'tokenApi',
-                'controller' => 'IndexController->getTotal',
-                'value' => $result['message']
-            ]);
-            return 0;
-        }
-
-        $url = env('DHT_API_URL') . '/api/getTotal?token=' . $result['token'];
-        $client = new ClientTool();
-        $result = $client->get($url);
-        if (is_numeric($result)) {
-            return $result;
-        }
-        Log::create([
-            'name' => 'TotalApi',
-            'controller' => 'IndexController->getTotal',
-            'value' => $result['message']
-        ]);
-        return 0;
+        return Hash::count();
     }
 
 }

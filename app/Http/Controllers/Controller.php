@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, MessagesApi;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests,MessagesApi;
 
     //后台模板根目录
     const VIEW_PATH = 'admin.';
